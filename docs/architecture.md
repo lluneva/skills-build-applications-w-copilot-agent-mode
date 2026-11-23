@@ -30,20 +30,20 @@ OctoFit Tracker is a three-tier application for a school fitness program. The st
 
 Record your plan here before editing code.
 
-- Presentation tier decision:
-- Logic tier decision:
-- Data tier decision:
-- Activity tracking approach:
-- Team management approach:
-- Leaderboard approach:
-- Workout suggestions approach:
+- Presentation tier decision: Use React route components with the shared `src/api/client.ts` fetch helper and Bootstrap-based accessible loading, empty, success, and error states.
+- Logic tier decision: Keep Express routes thin, validate API input and IDs in explicit service functions, and return deliberate 4xx errors through the shared error middleware.
+- Data tier decision: Enforce required Mongoose fields in the data schemas and seed representative demo records with upserts without clearing unrelated collections.
+- Activity tracking approach: Validate ObjectIds and existing user/team references, require valid activity fields, compute points from minutes, and timestamp new activities server-side.
+- Team management approach: Require a non-empty team name and mascot, default members to an empty array, and expose submitted member IDs in created and listed teams.
+- Leaderboard approach: Aggregate activity points by team, sort totals descending, add a 1-based rank, and return `teamName`, `totalPoints`, and `rank`.
+- Workout suggestions approach: Find the user by email, infer the first recommendation from their fitness goal or recent activity focus, and return a 404 for unknown emails.
 
 ## Test plan
 
 Record the commands you run and what each failure means.
 
-- Data-tier command: `npm run test:data --prefix octofit-tracker/backend`
-- API command: `npm run test:api --prefix octofit-tracker/backend`
-- Frontend command: `npm test --prefix octofit-tracker/frontend`
-- Backend build command: `npm run build --prefix octofit-tracker/backend`
-- Frontend build command: `npm run build --prefix octofit-tracker/frontend`
+- Data-tier command: `npm run test:data --prefix octofit-tracker/backend` - Passed: 5 tests covering Mongoose validation and idempotent demo seeding.
+- API command: `npm run test:api --prefix octofit-tracker/backend` - Passed: 4 tests covering activity and team contracts, leaderboard aggregation, and workout suggestions.
+- Frontend command: `npm test --prefix octofit-tracker/frontend` - Passed: 15 tests covering API data, loading, empty, and accessible error states.
+- Backend build command: `npm run build --prefix octofit-tracker/backend` - Passed: Express and TypeScript compile with no emitted output.
+- Frontend build command: `npm run build --prefix octofit-tracker/frontend` - Passed: Vite production bundle completed successfully.
